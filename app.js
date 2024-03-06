@@ -7,7 +7,7 @@ const filterAnimals = (filterPattern, data) => {
             people: country.people
                 .map(person => ({
                     ...person,
-                    animals: person.animals.filter(animal => animal.name.includes(filterPattern))
+                    animals: person.animals.filter(animal => animal.name.toLowerCase().includes(filterPattern.toLowerCase()))
                 }))
                 .filter(person => person.animals.length > 0)
         }))
@@ -24,16 +24,19 @@ const countItems = async (data) => {
             }))
         }));
 }
-
 const parseArguments = () => {
     const args = process.argv.slice(2);
     const argsMap = {};
     args.forEach(arg => {
-        const [key, value] = arg.split('=');
-        argsMap[key.replace('--', '')] = value;
+        let [key, value] = arg.split('=');
+        key = key.replace('--', '');
+        if (value === undefined) {
+            value = '';
+        }
+        argsMap[key] = value;
     });
     return argsMap;
-}
+};
 
 const main = async () => {
     const args = parseArguments();
@@ -43,14 +46,14 @@ const main = async () => {
         const filteredData = await filterAnimals(args.filter, data);
         console.log(JSON.stringify(filteredData, null, 2));
     } else if ('count' in args) {
-        const countedData = await countItems();
+        const countedData = await countItems(data);
         console.log(JSON.stringify(countedData, null, 2));
     } else {
-        console.log('Please provide a valid command (--filter=pattern or --count).');
+        console.log(`Bad request, Please provide a valid command (--filter=pattern or --count).`);
     }
 }
 
 if (require.main === module) {
     main();
 }
-module.exports = { filterAnimals, countItems };
+module.exports = { filterAnimals, countItems, parseArguments };
