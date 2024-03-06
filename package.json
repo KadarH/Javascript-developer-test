@@ -1,0 +1,17 @@
+{
+  "name": "cdp-recruitment-javascript-main",
+  "version": "1.0.0",
+  "description": "javascript test",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KadarH/Javascript-developer-test.git"
+  },
+  "author": "KADAR Hamza",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
